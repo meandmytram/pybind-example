@@ -4,7 +4,6 @@ This guide walks you through setting up a simple C++ library and creating Python
 
 ## Prerequisites
 
-- Basic knowledge of C++ and Python programming.
 - Git installed on your system.
 - CMake (version 3.12 or higher recommended).
 - A C++ compiler compatible with C++11 or later.
@@ -14,8 +13,12 @@ This guide walks you through setting up a simple C++ library and creating Python
 Your project directory will look something like this:
 
 ```
-CalculatorExample/
+pybind-example/
 ├── CMakeLists.txt
+├── README.md
+├── .gitignore
+├── .gitmodules
+├── build/
 ├── extern/
 │   └── pybind11/ (pybind11 submodule)
 ├── include/
@@ -32,7 +35,7 @@ CalculatorExample/
 1. Create a new directory for your project and navigate into it:
 
    ```bash
-   mkdir CalculatorExample && cd CalculatorExample
+   mkdir pybind-example && cd pybind-example
    ```
 
 2. Initialize the directory as a Git repository:
@@ -121,11 +124,18 @@ PYBIND11_MODULE(calculator, m) {
 2. **Python `CMakeLists.txt` in the `python` directory:**
 
    ```cmake
-   find_package(pybind11 REQUIRED)
    pybind11_add_module(calculator pybind_module.cpp)
 
    target_link_libraries(calculator PRIVATE calculator_lib)
    target_include_directories(calculator PRIVATE ../include)
+   ```
+
+3. **`CMakeLists.txt` in the `src` directory:**
+
+   ```cmake
+   add_library(calculator_lib Calculator.cpp)
+
+   target_include_directories(calculator_lib PUBLIC ../include)
    ```
 
 ## Step 6: Build Your Project
